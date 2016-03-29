@@ -1,0 +1,101 @@
+Project management system
+
+Modules:
+Welcome page:
+	Log in
+	General information
+	
+Admin
+	Log in
+	Create project manager users
+	assign password
+	create projects
+	remove project manager and add a new one
+
+Front end
+Project Manager
+	Log in
+	Select project
+		expected start and end dates
+		Project auto assigns itself to the current project manager
+	Create Customer
+	Create contact person
+	Assign project to customer
+		Display start and end dates
+	Create tasks for projects
+		Name
+		set sprints - expected start and end dates
+	Assign tasks to users, can add multiple users
+	View comments from customer
+	Attach documents to the project and name them
+		
+Customer Website
+Customer
+	Log in
+	View project status (your projects only)
+	view project tasks
+		view task status
+		view dates
+		view task owners
+	Create comments to project manager
+	
+	
+OBJECTS
+	User
+		ID
+		userName
+		Password
+		FullName
+	Employee
+		ID(FK)
+		Email
+		phoneNumber
+		department
+			PM
+			BA
+			SA
+			UI developers
+			DB developers
+		Customer
+			ID(FK)
+			contactPersonName
+			email
+			phoneNumber
+	Project
+		projectID
+		projectName
+		customerID
+		Expected start date
+		Expected end date
+		Project manager(empID)
+		Document
+		Comments
+	
+	Tasks
+		taskID
+		taskName
+		projectID(FK)
+		start date
+		end date
+		empID(FK)
+		taskStatus
+		
+	Customer
+		customerID(user/customer/customerID)
+		customerName
+		Contact person
+		projectID(FK)
+		
+	
+	
+	
+	https://github.com/esync
+	
+	http://localhost:58157/Account/Login
+		email@email.com
+		Email@123
+	
+	
+	http://localhost:58157/
+	
+	http://localhost:49845/ProjectDetails.aspx
