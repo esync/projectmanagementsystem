@@ -1,4 +1,6 @@
 Project management system
+System Name
+PMSync project tracking system
 
 Modules:
 Welcome page:
@@ -41,50 +43,57 @@ Customer
 	
 	
 OBJECTS
-	User
-		ID
+
+	Users
+		Id
 		userName
 		Password
-		FullName
-	Employee
-		ID(FK)
 		Email
-		phoneNumber
-		department
+		PhoneNumber
+
+	Employees
+		Id
+		UserId
+		EmployeeName
+		Department
 			PM
 			BA
 			SA
 			UI developers
-			DB developers
-		Customer
-			ID(FK)
-			contactPersonName
-			email
-			phoneNumber
-	Project
-		projectID
-		projectName
-		customerID
-		Expected start date
-		Expected end date
-		Project manager(empID)
-		Document
+			DB developers	
+	
+	Customers
+		Id
+		UserId
+		CustomerName
+		ContactPerson
+		ContactPhone	
+			
+	Projects
+		Id
+		ProjectName
+		EmployeeId(FK)
+		CustomerId(FK)
+		StartDate
+		EndDate
+		Attachment
 		Comments
 	
 	Tasks
-		taskID
+		Id
 		taskName
 		projectID(FK)
-		start date
-		end date
-		empID(FK)
-		taskStatus
+		EmployeeId(FK)
+		StartDate
+		EndDate
+		TaskStatus
+			1 - Assigned
+			2 - In Progress
+			3 - Completed
+		Comments
 		
-	Customer
-		customerID(user/customer/customerID)
-		customerName
-		Contact person
-		projectID(FK)
+
+		
 		
 	
 	
@@ -100,6 +109,9 @@ GIT Read Me
 	git push origin <branch name>
 	
 	git pull origin <branch name>
+	
+	
+	
 	
 	https://github.com/esync
 	
