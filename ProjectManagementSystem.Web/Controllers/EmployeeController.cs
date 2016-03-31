@@ -148,6 +148,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 await db.SaveChangesAsync();
 
                 model.Id = employee.Id;
+                model.UserId = user.Id;
 
                 return CreatedAtRoute("DefaultApi", new {id = employee.Id}, model);
             }

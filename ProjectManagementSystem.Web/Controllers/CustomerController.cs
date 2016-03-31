@@ -150,6 +150,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 await db.SaveChangesAsync();
 
                 model.Id = customer.Id;
+                model.UserId = user.Id;
 
                 return CreatedAtRoute("DefaultApi", new { id = customer.Id }, model);
             }
