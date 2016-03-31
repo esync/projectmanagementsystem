@@ -2,9 +2,12 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
 
@@ -13,6 +16,29 @@ namespace ProjectManagementSystem.Web.Controllers
     public class EmployeeController : ApiController
     {
         private PmSyncDbContext db = new PmSyncDbContext();
+        private ApplicationDbContext userDb = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public EmployeeController()
+        {
+        }
+
+        public EmployeeController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? new ApplicationUserManager(new UserStore<ApplicationUser>(userDb));
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: api/Employee
         public IQueryable<EmployeeModel> GetEmployees()
@@ -105,18 +131,30 @@ namespace ProjectManagementSystem.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            Employee employee = new Employee
+            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber };
+
+            var result = await UserManager.CreateAsync(user);
+
+            if (result.Succeeded)
             {
-                EmployeeName = model.EmployeeName,
-                Department = model.Department
-            };
+                Employee employee = new Employee
+                {
+                    EmployeeName = model.EmployeeName,
+                    Department = model.Department,
+                    UserId = user.Id
+                };
 
-            db.Employees.Add(employee);
-            await db.SaveChangesAsync();
+                db.Employees.Add(employee);
+                await db.SaveChangesAsync();
 
-            model.Id = employee.Id;
+                model.Id = employee.Id;
 
-            return CreatedAtRoute("DefaultApi", new { id = employee.Id }, model);
+                return CreatedAtRoute("DefaultApi", new {id = employee.Id}, model);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         // DELETE: api/Employee/5

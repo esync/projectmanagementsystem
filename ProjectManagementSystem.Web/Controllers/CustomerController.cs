@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
 
@@ -13,6 +14,29 @@ namespace ProjectManagementSystem.Web.Controllers
     public class CustomerController : ApiController
     {
         private PmSyncDbContext db = new PmSyncDbContext();
+        private ApplicationDbContext userDb = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public CustomerController()
+        {
+        }
+
+        public CustomerController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? new ApplicationUserManager(new UserStore<ApplicationUser>(userDb));
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: api/Customer
         public IQueryable<CustomerModel> GetCustomers()
@@ -108,19 +132,32 @@ namespace ProjectManagementSystem.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            Customer customer = new Customer
+            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.ContactPhone };
+
+            var result = await UserManager.CreateAsync(user);
+
+            if (result.Succeeded)
             {
-                CustomerName = model.CustomerName,
-                ContactPerson = model.ContactPerson,
-                ContactPhone = model.ContactPhone
-            };
+                Customer customer = new Customer
+                {
+                    CustomerName = model.CustomerName,
+                    ContactPerson = model.ContactPerson,
+                    ContactPhone = model.ContactPhone,
+                    UserId = user.Id
+                };
 
-            db.Customers.Add(customer);
-            await db.SaveChangesAsync();
+                db.Customers.Add(customer);
+                await db.SaveChangesAsync();
 
-            model.Id = customer.Id;
+                model.Id = customer.Id;
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.Id }, model);
+                return CreatedAtRoute("DefaultApi", new { id = customer.Id }, model);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            
         }
 
         // DELETE: api/Customer/5
