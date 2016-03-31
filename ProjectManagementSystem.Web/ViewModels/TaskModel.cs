@@ -1,14 +1,11 @@
-namespace ProjectManagementSystem.Web.Models
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
 
-    public partial class Task
+namespace ProjectManagementSystem.Web.ViewModels
+{
+    public class TaskModel
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(256)]
         public string TaskName { get; set; }
 
         public int ProjectId { get; set; }
@@ -19,14 +16,12 @@ namespace ProjectManagementSystem.Web.Models
 
         public DateTime EndDate { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string TaskStatus { get; set; }
 
         public string Comments { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public string ProjectName { get; set; }
 
-        public virtual Project Project { get; set; }
+        public string EmployeeName { get; set; }
     }
 }

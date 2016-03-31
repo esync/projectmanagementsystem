@@ -1,30 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
+using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
     public class CustomerController : ApiController
     {
         private PmSyncDbContext db = new PmSyncDbContext();
+        private ApplicationDbContext userDb = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public CustomerController()
+        {
+        }
+
+        public CustomerController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? new ApplicationUserManager(new UserStore<ApplicationUser>(userDb));
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: api/Customer
-        public IQueryable<Customer> GetCustomers()
+        public IQueryable<CustomerModel> GetCustomers()
         {
-            return db.Customers;
+            var customers = db.Customers.Select
+            (
+                c => new CustomerModel
+                {
+                    Id = c.Id,
+                    CustomerName = c.CustomerName,
+                    ContactPerson = c.ContactPerson,
+                    ContactPhone = c.ContactPhone,
+                    UserId = c.UserId
+                }
+            );
+
+            return customers;
         }
 
         // GET: api/Customer/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerModel))]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
             Customer customer = await db.Customers.FindAsync(id);
@@ -33,22 +66,41 @@ namespace ProjectManagementSystem.Web.Controllers
                 return NotFound();
             }
 
-            return Ok(customer);
+            CustomerModel model = new CustomerModel
+            {
+                Id = customer.Id,
+                CustomerName = customer.CustomerName,
+                ContactPerson = customer.ContactPerson,
+                ContactPhone = customer.ContactPhone,
+                UserId = customer.UserId
+            };
+
+            return Ok(model);
         }
 
         // PUT: api/Customer/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCustomer(int id, Customer customer)
+        public async Task<IHttpActionResult> PutCustomer(int id, CustomerModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customer.Id)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
+
+            Customer customer = await db.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            customer.CustomerName = model.CustomerName;
+            customer.ContactPerson = model.ContactPerson;
+            customer.ContactPhone = model.ContactPhone;
 
             db.Entry(customer).State = EntityState.Modified;
 
@@ -72,22 +124,44 @@ namespace ProjectManagementSystem.Web.Controllers
         }
 
         // POST: api/Customer
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> PostCustomer(Customer customer)
+        [ResponseType(typeof(CustomerModel))]
+        public async Task<IHttpActionResult> PostCustomer(CustomerModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
-            await db.SaveChangesAsync();
+            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.ContactPhone };
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.Id }, customer);
+            var result = await UserManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                Customer customer = new Customer
+                {
+                    CustomerName = model.CustomerName,
+                    ContactPerson = model.ContactPerson,
+                    ContactPhone = model.ContactPhone,
+                    UserId = user.Id
+                };
+
+                db.Customers.Add(customer);
+                await db.SaveChangesAsync();
+
+                model.Id = customer.Id;
+
+                return CreatedAtRoute("DefaultApi", new { id = customer.Id }, model);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            
         }
 
         // DELETE: api/Customer/5
-        [ResponseType(typeof(Customer))]
+        [ResponseType(typeof(CustomerModel))]
         public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
             Customer customer = await db.Customers.FindAsync(id);
@@ -96,10 +170,19 @@ namespace ProjectManagementSystem.Web.Controllers
                 return NotFound();
             }
 
+            CustomerModel model = new CustomerModel
+            {
+                Id = customer.Id,
+                CustomerName = customer.CustomerName,
+                ContactPerson = customer.ContactPerson,
+                ContactPhone = customer.ContactPhone,
+                UserId = customer.UserId
+            };
+
             db.Customers.Remove(customer);
             await db.SaveChangesAsync();
 
-            return Ok(customer);
+            return Ok(model);
         }
 
         protected override void Dispose(bool disposing)

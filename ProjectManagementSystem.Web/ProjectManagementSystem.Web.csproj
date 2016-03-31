@@ -199,6 +199,10 @@
     <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CustomerModel.cs" />
+    <Compile Include="ViewModels\EmployeeModel.cs" />
+    <Compile Include="ViewModels\ProjectModel.cs" />
+    <Compile Include="ViewModels\TaskModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\DBScripts\01_Employees.sql" />
@@ -260,9 +264,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
