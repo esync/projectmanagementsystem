@@ -1,0 +1,57 @@
+﻿html, body{
+    font-size: 100%;
+	background:	#fff;
+	font-family: 'Open Sans', sans-serif;
+}
+p,body{
+	margin:0;
+}
+h1,h2,h3,h4,h5,h6{
+	font-family: 'Abril Fatface', cursive;
+	margin:0;
+}
+ul,label{
+	margin:0;
+	padding:0;
+}
+body a:hover{
+	text-decoration:none;
+}
+/*-- banner --*/
+.banner{
+	background:url(/Content/image/4.jpg) no-repeat 0px 0px;
+	background-size:cover;
+	-webkit-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	-ms-background-size:cover;
+	min-height:640px;
+}
+.banner1{
+	background:url(/Content/image/4.jpg) no-repeat 0px 0px;
+	background-size:cover;
+	-webkit-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	-ms-background-size:cover;
+	min-height:365px;
+}
+.logo{
+	padding:2em 0 0;
+	text-align:center;
+}
+.logo a{
+	font-size: 5em;
+    text-shadow: 1px 2px 2px #000;
+    color: #fff;
+	font-family: 'Abril Fatface', cursive;
+    text-decoration: none;
+}
+.logo a span{
+	display: block;
+    font-size: .2em;
+    color: #DFDFDF;
+    line-height: 0;
+    letter-spacing: 2px;
+    font-family: 'Open Sans', sans-serif;
+}
