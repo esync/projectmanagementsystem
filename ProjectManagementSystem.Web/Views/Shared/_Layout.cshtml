@@ -50,13 +50,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                     <!-- Logo -->
                     <div class="logo">
-                        <span class="navbar-brand button">PMSync</span>
+                        <a class="navbar-brand button" @Html.ActionLink("PMSync", "Index", "Home")></a>
                     </div>
                     <!-- //Logo -->
                 </div>
                 <div id="navbar" class="navbar-collapse navbar-right collapse">
                     <ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                         @if (Request.IsAuthenticated)
                         {
                             <li>@Html.ActionLink("Employees", "Index", "Employees")</li>

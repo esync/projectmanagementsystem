@@ -4,39 +4,43 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="jumbotron" style="opacity:0.9">
 
-<div>
-    <h4>Employee</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeName)
-        </dt>
+    <h2>Details</h2>
 
-        <dd>
-            @Html.DisplayFor(model => model.EmployeeName)
-        </dd>
+    <div>
+        <h4>Employee</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EmployeeName)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Department)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Department)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Department)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserId)
+            </dt>
 
-    </dl>
+            <dd>
+                @Html.DisplayFor(model => model.UserId)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

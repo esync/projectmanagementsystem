@@ -4,47 +4,51 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<div class="jumbotron" style="opacity:0.8">
 
-<div>
-    <h4>Customer</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </dt>
+    <h2>Details</h2>
 
-        <dd>
-            @Html.DisplayFor(model => model.CustomerName)
-        </dd>
+    <div>
+        <h4>Customer</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactPerson)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CustomerName)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ContactPerson)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactPerson)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactPhone)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ContactPerson)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.ContactPhone)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactPhone)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ContactPhone)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserId)
+            </dt>
 
-    </dl>
+            <dd>
+                @Html.DisplayFor(model => model.UserId)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
