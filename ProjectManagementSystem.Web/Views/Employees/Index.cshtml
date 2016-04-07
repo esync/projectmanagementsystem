@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjectManagementSystem.Web.Models.Employee>
+﻿@model IEnumerable<ProjectManagementSystem.Web.ViewModels.EmployeeModel>
 
 @{
     ViewBag.Title = "Index";
@@ -18,6 +18,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Department)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
             @*<th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>*@
@@ -32,6 +41,15 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 @*<td>
                     @Html.DisplayFor(modelItem => item.UserId)

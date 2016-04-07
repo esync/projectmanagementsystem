@@ -7,18 +7,58 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
+using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
     public class EmployeesController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
+        private ApplicationDbContext userDb = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public EmployeesController()
+        {
+        }
+
+        public EmployeesController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? new ApplicationUserManager(new UserStore<ApplicationUser>(userDb));
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Employees
         public async Task<ActionResult> Index()
         {
-            return View(await db.Employees.ToListAsync());
+            var employees = db.Employees.Select
+            (
+                e => new EmployeeModel
+                {
+                    Id = e.Id,
+                    EmployeeName = e.EmployeeName,
+                    Department = e.Department,
+                    UserId = e.UserId
+                    //UserName = userDb.Users.Find(e.UserId).UserName,
+                    //Email = userDb.Users.Find(e.UserId).Email,
+                    //PhoneNumber = userDb.Users.Find(e.UserId).PhoneNumber
+                }
+            );
+
+            return View(await employees.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -33,7 +73,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(employee);
+
+            EmployeeModel model = new EmployeeModel
+            {
+                Id = employee.Id,
+                EmployeeName = employee.EmployeeName,
+                Department = employee.Department,
+                UserId = employee.UserId
+            };
+
+            return View(model);
         }
 
         // GET: Employees/Create
@@ -47,16 +96,34 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,EmployeeName,Department,UserId")] Employee employee)
+        public async Task<ActionResult> Create(EmployeeModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
-                await db.SaveChangesAsync();
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    Employee employee = new Employee
+                    {
+                        EmployeeName = model.EmployeeName,
+                        Department = model.Department,
+                        UserId = user.Id
+                    };
+
+                    db.Employees.Add(employee);
+                    await db.SaveChangesAsync();
+
+                    model.Id = employee.Id;
+                    model.UserId = user.Id;
+                }
+
                 return RedirectToAction("Index");
             }
 
-            return View(employee);
+            return View(model);
         }
 
         // GET: Employees/Edit/5
@@ -71,7 +138,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(employee);
+
+            EmployeeModel model = new EmployeeModel
+            {
+                Id = employee.Id,
+                EmployeeName = employee.EmployeeName,
+                Department = employee.Department,
+                UserId = employee.UserId
+            };
+
+            return View(model);
         }
 
         // POST: Employees/Edit/5
@@ -79,15 +155,20 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,EmployeeName,Department,UserId")] Employee employee)
+        public async Task<ActionResult> Edit(EmployeeModel model)
         {
             if (ModelState.IsValid)
             {
+                Employee employee = await db.Employees.FindAsync(model.Id);
+
+                employee.EmployeeName = model.EmployeeName;
+                employee.Department = model.Department;
+
                 db.Entry(employee).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(employee);
+            return View(model);
         }
 
         // GET: Employees/Delete/5
@@ -102,7 +183,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(employee);
+
+            EmployeeModel model = new EmployeeModel
+            {
+                Id = employee.Id,
+                EmployeeName = employee.EmployeeName,
+                Department = employee.Department,
+                UserId = employee.UserId
+            };
+
+            return View(model);
         }
 
         // POST: Employees/Delete/5

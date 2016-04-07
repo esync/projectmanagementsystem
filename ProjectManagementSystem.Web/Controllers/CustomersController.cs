@@ -7,18 +7,56 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
+using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
     public class CustomersController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
+        private ApplicationDbContext userDb = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public CustomersController()
+        {
+        }
+
+        public CustomersController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? new ApplicationUserManager(new UserStore<ApplicationUser>(userDb));
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Customers
         public async Task<ActionResult> Index()
         {
-            return View(await db.Customers.ToListAsync());
+            var customers = db.Customers.Select
+            (
+                c => new CustomerModel
+                {
+                    Id = c.Id,
+                    CustomerName = c.CustomerName,
+                    ContactPerson = c.ContactPerson,
+                    ContactPhone = c.ContactPhone,
+                    UserId = c.UserId
+                }
+            );
+
+            return View(await customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -33,7 +71,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(customer);
+
+            CustomerModel model = new CustomerModel
+            {
+                Id = customer.Id,
+                CustomerName = customer.CustomerName,
+                ContactPerson = customer.ContactPerson,
+                ContactPhone = customer.ContactPhone,
+                UserId = customer.UserId
+            };
+            return View(model);
         }
 
         // GET: Customers/Create
@@ -47,16 +94,35 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CustomerName,ContactPerson,ContactPhone,UserId")] Customer customer)
+        public async Task<ActionResult> Create(CustomerModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Customers.Add(customer);
-                await db.SaveChangesAsync();
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.ContactPhone };
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    Customer customer = new Customer
+                    {
+                        CustomerName = model.CustomerName,
+                        ContactPerson = model.ContactPerson,
+                        ContactPhone = model.ContactPhone,
+                        UserId = user.Id
+                    };
+
+                    db.Customers.Add(customer);
+                    await db.SaveChangesAsync();
+
+                    model.Id = customer.Id;
+                    model.UserId = user.Id;
+                }
+
                 return RedirectToAction("Index");
             }
 
-            return View(customer);
+            return View(model);
         }
 
         // GET: Customers/Edit/5
@@ -71,7 +137,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(customer);
+
+            CustomerModel model = new CustomerModel
+            {
+                Id = customer.Id,
+                CustomerName = customer.CustomerName,
+                ContactPerson = customer.ContactPerson,
+                ContactPhone = customer.ContactPhone,
+                UserId = customer.UserId
+            };
+            return View(model);
         }
 
         // POST: Customers/Edit/5
@@ -79,15 +154,21 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,CustomerName,ContactPerson,ContactPhone,UserId")] Customer customer)
+        public async Task<ActionResult> Edit(CustomerModel model)
         {
             if (ModelState.IsValid)
             {
+                Customer customer = await db.Customers.FindAsync(model.Id);
+
+                customer.CustomerName = model.CustomerName;
+                customer.ContactPerson = model.ContactPerson;
+                customer.ContactPhone = model.ContactPhone;
+
                 db.Entry(customer).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(customer);
+            return View(model);
         }
 
         // GET: Customers/Delete/5
@@ -102,7 +183,16 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(customer);
+
+            CustomerModel model = new CustomerModel
+            {
+                Id = customer.Id,
+                CustomerName = customer.CustomerName,
+                ContactPerson = customer.ContactPerson,
+                ContactPhone = customer.ContactPhone,
+                UserId = customer.UserId
+            };
+            return View(model);
         }
 
         // POST: Customers/Delete/5
