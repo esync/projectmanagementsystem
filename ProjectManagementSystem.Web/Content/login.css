@@ -1,40 +1,68 @@
-﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700);
 body {
-    background-color: #f9f9f9 !important;
+    background-image: url(../Content/image/4.jpg) !important;
     font-family: 'Open Sans', sans-serif!important;
     font-size:11px;
 }
 .well{
-    background-color:transparent !important;
-    opacity: 0.89;
+    /*background-color:#fff!important;*/
+	background:transparent;
     border-radius:0!important;
     border:black solid 1px;
 }
 
+.text-sm {
+	color:#fff !important;
+}
+
 .well.login-box {
     /*width:400px; */
-    border:#d1d1d1 solid 1px;    
+    border:#ddd solid 1px;
+    margin:0 auto;
     margin-top:30px;
 }
 .well.login-box legend {
-  font-size:26px;
-  text-align:center;
-  font-weight:300;
-  color:#fff;
+    font-size: 26px;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
 }
 .well.login-box label {
-  font-weight:300;
-  font-size:13px;
-  color:#fff;
+	font-weight: 800;
+    font-size: 13px;
+    color: #fff;
+  
 }
 .well.login-box input[type="text"] {
-  box-shadow:none;
-  border-color:#ddd;
-  border-radius:0;
+  box-shadow: none;
+    border-color: #ddd;
+    border-radius: 0;
+    background: transparent;
+    color: #fff;
 }
 
 .well.welcome-text{
     font-size:21px;
+}
+
+/* Notifications */
+
+.notification{
+    position:fixed;
+    top: 20px;
+    right:0;
+    background-color:#FF4136;
+    padding: 20px;
+    color: #fff;
+    font-size:21px;
+    display:none;
+}
+.notification-success{
+  background-color:#3D9970;
+}
+
+.notification-show{
+    display:block!important;
 }
 
 /*Loged in*/

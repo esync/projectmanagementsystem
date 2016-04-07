@@ -1,45 +1,102 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>PMSync</title>
+    <!-- For-Mobile-Apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //For-Mobile-Apps -->
+    <!-- Custom-Theme-Files -->
+    <!-- Bootstrap-Core-CSS -->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet">
+    <!-- Style.CSS -->
+    <link href="/Content/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Login.CSS -->
+    <link href="/Content/login.css" rel="stylesheet" type="text/css" media="all" />
 
+    <!-- //Custom-Theme-Files -->
+    <script>
+	$(function() {
+		$(".meter > span").each(function() {
+			$(this)
+			.data("origWidth", $(this).width())
+			.width(0)
+			.animate({
+				width: $(this).data("origWidth")
+			}, 1200);
+		});
+	});
+    </script>
 </head>
-<body>
-    <div class="navbar navbar-default navbar-fixed-top">
+<body style='background-image src="Content/image/4.jpg"'>
+    <!-- Header -->
+    <div class="header">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                    <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
-                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-                    <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                    <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-default">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Logo -->
+                    <div class="logo">
+                        <span class="navbar-brand button">PMSync</span>
+                    </div>
+                    <!-- //Logo -->
+                </div>
+                <div id="navbar" class="navbar-collapse navbar-right collapse">
+                    <ul class="nav navbar-nav navbar-right cross-effect" id="cross-effect">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
+                            <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                            <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                            <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
+
+                            <li>
+                                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                            </li>
+
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                            }
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+                    </ul>
+                </div><!-- //Navbar-Collapse -->
+            </nav>
+            <!-- //Navigation -->
         </div>
+        <!-- //Container -->
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    <!-- //Header -->
+    <section class='container content' style='margin-top:200px;'>
+        <div class="row">
+            @RenderBody()
+        </div>
+    </section>
+    <!-- Custom-JavaScript-File-Links -->
+    <!-- Supportive-JavaScript -->
+    <script type="text/javascript" src="/Scripts/jquery.min.js"></script>
+    <!-- Necessary-JavaScript-File-For-Bootstrap -->
+    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
