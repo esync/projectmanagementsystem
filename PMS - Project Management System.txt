@@ -92,7 +92,37 @@ OBJECTS
 			3 - Completed
 		Comments
 		
-
+VIEWS
+	Project Manager:
+	User Role - Admin
+		Home 
+		Users (CRUD)
+		Employees (CRUD)
+		Projects (CRUD)
+		Tasks (CRUD)
+	
+	Project Manager:
+	User Role - User
+		Home 
+		Users (R)
+		Employees (R)
+		Projects (R)
+		Tasks (R)
+		
+	Other Employees:
+	User Role - User
+		Home
+		MyProjects (R)
+		MyTasks (R)
+	
+	Customer:
+	User Role - User
+		Home
+		MyProjects (R)
+			ProjectManager
+		MyProjectTasks (R)
+			TaskOwner
+			TaskDates (start and end dates)
 		
 		
 	
