@@ -106,26 +106,30 @@ VIEWS
 		Home 
 		Users (R)
 		Employees (R)
-		Projects (R)
+		Projects (RU)
 		Tasks (R)
 		
 	Other Employees:
 	User Role - User
 		Home
 		MyProjects (R)
-		MyTasks (R)
+		MyTasks (RU)
 	
 	Customer:
 	User Role - User
 		Home
 		MyProjects (R)
 			ProjectManager
-		MyProjectTasks (R)
+		MyProjectTasks (RU)
 			TaskOwner
 			TaskDates (start and end dates)
-		
-		
-	
+
+TO DO:
+	Create customer view page
+	Document upload
+	Date Picker*
+	Create a task status drop down list
+			
 	
 GIT Read Me
 	git clone
