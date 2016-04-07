@@ -129,6 +129,9 @@ TO DO:
 	Document upload
 	Date Picker*
 	Create a task status drop down list
+	Error handling when deleting
+	Drop down for project should show only PM-employees only
+	end date has a problem - format
 			
 	
 GIT Read Me

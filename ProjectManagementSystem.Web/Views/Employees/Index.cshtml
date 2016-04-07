@@ -5,7 +5,7 @@
 }
 
 <div class="jumbotron" style="opacity:0.8">
-    <h2>Index</h2>
+    <h2>Employee</h2>
 
     <p>
         @Html.ActionLink("Create New", "Create")
@@ -18,9 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Department)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.UserId)
-            </th>
+            </th>*@
             <th></th>
         </tr>
 
@@ -33,9 +33,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Department)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.UserId)
-                </td>
+                </td>*@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
