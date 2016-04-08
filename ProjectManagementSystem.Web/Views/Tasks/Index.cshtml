@@ -14,13 +14,13 @@
     <table class="table">
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.TaskName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.EmployeeName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TaskName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -41,13 +41,13 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.EmployeeName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProjectName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
@@ -62,9 +62,9 @@
                     @Html.DisplayFor(modelItem => item.Comments)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                    @Html.ActionLink("Details", "Details", new {id = item.Id}) |
+                    @Html.ActionLink("Delete", "Delete", new {id = item.Id})
                 </td>
             </tr>
         }

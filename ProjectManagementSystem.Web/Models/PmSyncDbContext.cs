@@ -38,6 +38,16 @@ namespace ProjectManagementSystem.Web.Models
                 .HasMany(e => e.Tasks)
                 .WithRequired(e => e.Project)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasMany(e => e.Customers)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasMany(e => e.Employees)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.UserId);
         }
     }
 }

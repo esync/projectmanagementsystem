@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
@@ -45,9 +41,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees
         public async Task<ActionResult> Index()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             var employees = db.Employees.Select
             (
                 e => new EmployeeModel
@@ -55,10 +48,10 @@ namespace ProjectManagementSystem.Web.Controllers
                     Id = e.Id,
                     EmployeeName = e.EmployeeName,
                     Department = e.Department,
-                    UserId = e.UserId
-                    //UserName = userDb.Users.Find(e.UserId).UserName,
-                    //Email = userDb.Users.Find(e.UserId).Email,
-                    //PhoneNumber = userDb.Users.Find(e.UserId).PhoneNumber
+                    UserId = e.UserId,
+                    UserName = e.User.UserName,
+                    Email = e.User.Email,
+                    PhoneNumber = e.User.PhoneNumber
                 }
             );
 
@@ -68,9 +61,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -86,7 +76,10 @@ namespace ProjectManagementSystem.Web.Controllers
                 Id = employee.Id,
                 EmployeeName = employee.EmployeeName,
                 Department = employee.Department,
-                UserId = employee.UserId
+                UserId = employee.UserId,
+                UserName = employee.User.UserName,
+                Email = employee.User.Email,
+                PhoneNumber = employee.User.PhoneNumber
             };
 
             return View(model);
@@ -95,9 +88,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             var departments  = new List<SelectListItem>
             {
                 new SelectListItem { Value = "PM", Text = "PM" },
@@ -107,7 +97,14 @@ namespace ProjectManagementSystem.Web.Controllers
                 new SelectListItem { Value = "DB developers", Text = "DB developers" }
             };
 
+            var roles = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Employees", Text = "Employees" },
+                new SelectListItem { Value = "Project Managers", Text = "Project Managers" }
+            };
+
             ViewBag.Department = new SelectList(departments, "Value", "Text");
+            ViewBag.Role = new SelectList(roles, "Value", "Text");
 
             return View();
         }
@@ -127,6 +124,8 @@ namespace ProjectManagementSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, model.Role);
+
                     Employee employee = new Employee
                     {
                         EmployeeName = model.EmployeeName,
@@ -150,7 +149,14 @@ namespace ProjectManagementSystem.Web.Controllers
                 new SelectListItem { Value = "DB developers", Text = "DB developers" }
             };
 
-            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
+            var roles = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Employees", Text = "Employees" },
+                new SelectListItem { Value = "Project Managers", Text = "Project Managers" }
+            };
+
+            ViewBag.Department = new SelectList(departments, "Value", "Text");
+            ViewBag.Role = new SelectList(roles, "Value", "Text");
 
             return View(model);
         }
@@ -158,9 +164,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -188,7 +191,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 new SelectListItem { Value = "DB developers", Text = "DB developers" }
             };
 
-            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
+            ViewBag.Department = new SelectList(departments, "Value", "Text");
 
             return View(model);
         }
@@ -221,7 +224,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 new SelectListItem { Value = "DB developers", Text = "DB developers" }
             };
 
-            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
+            ViewBag.Department = new SelectList(departments, "Value", "Text");
 
             return View(model);
         }
@@ -229,9 +232,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

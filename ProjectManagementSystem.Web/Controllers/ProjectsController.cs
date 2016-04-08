@@ -20,9 +20,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Projects
         public async Task<ActionResult> Index()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             var projects = db.Projects.Select
             (
                 p => new ProjectModel
@@ -46,9 +43,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Projects/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -79,9 +73,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Projects/Create
         public ActionResult Create()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             ViewBag.CustomerId = new SelectList(db.Customers, "Id", "CustomerName");
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName");
             return View();
@@ -119,10 +110,7 @@ namespace ProjectManagementSystem.Web.Controllers
 
         // GET: Projects/Edit/5
         public async Task<ActionResult> Edit(int? id)
-        {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
+        {            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -183,9 +171,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Projects/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

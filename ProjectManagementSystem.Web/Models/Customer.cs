@@ -26,5 +26,7 @@ namespace ProjectManagementSystem.Web.Models
         public string UserId { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
+
+        public virtual AspNetUser User { get; set; }
     }
 }

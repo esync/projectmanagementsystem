@@ -31,5 +31,8 @@ namespace ProjectManagementSystem.Web.ViewModels
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Display(Name = "Role")]
+        public string Role { get; set; }
     }
 }

@@ -45,9 +45,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers
         public async Task<ActionResult> Index()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             var customers = db.Customers.Select
             (
                 c => new CustomerModel
@@ -56,7 +53,9 @@ namespace ProjectManagementSystem.Web.Controllers
                     CustomerName = c.CustomerName,
                     ContactPerson = c.ContactPerson,
                     ContactPhone = c.ContactPhone,
-                    UserId = c.UserId
+                    UserId = c.UserId,
+                    UserName = c.User.UserName,
+                    Email = c.User.Email
                 }
             );
 
@@ -66,9 +65,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -85,7 +81,9 @@ namespace ProjectManagementSystem.Web.Controllers
                 CustomerName = customer.CustomerName,
                 ContactPerson = customer.ContactPerson,
                 ContactPhone = customer.ContactPhone,
-                UserId = customer.UserId
+                UserId = customer.UserId,
+                UserName = customer.User.UserName,
+                Email = customer.User.Email
             };
             return View(model);
         }
@@ -93,9 +91,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             return View();
         }
 
@@ -114,6 +109,8 @@ namespace ProjectManagementSystem.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, "Customers");
+
                     Customer customer = new Customer
                     {
                         CustomerName = model.CustomerName,
@@ -135,9 +132,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -184,9 +178,6 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

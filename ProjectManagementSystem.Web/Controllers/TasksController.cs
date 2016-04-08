@@ -19,10 +19,7 @@ namespace ProjectManagementSystem.Web.Controllers
 
         // GET: Tasks
         public async Task<ActionResult> Index()
-        {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
+        {            
             var tasks = db.Tasks.Select
             (
                 t => new TaskModel
@@ -45,10 +42,7 @@ namespace ProjectManagementSystem.Web.Controllers
 
         // GET: Tasks/Details/5
         public async Task<ActionResult> Details(int? id)
-        {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
+        {            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -79,11 +73,21 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Tasks/Create
         public ActionResult Create()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName");
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName");
+
+            var taskStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Assigned", Text = "Assigned" },
+                new SelectListItem { Value = "Started", Text = "Started" },
+                new SelectListItem { Value = "On Hold", Text = "On Hold" },
+                new SelectListItem { Value = "Completed", Text = "Completed" },
+                new SelectListItem { Value = "Dropped", Text = "Dropped" },
+                new SelectListItem { Value = "Not Started", Text = "Not Started" }
+            };
+
+            ViewBag.TaskStatus = new SelectList(taskStatus, "Value", "Text");
+
             return View();
         }
 
@@ -114,15 +118,25 @@ namespace ProjectManagementSystem.Web.Controllers
 
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+
+            var taskStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Assigned", Text = "Assigned" },
+                new SelectListItem { Value = "Started", Text = "Started" },
+                new SelectListItem { Value = "On Hold", Text = "On Hold" },
+                new SelectListItem { Value = "Completed", Text = "Completed" },
+                new SelectListItem { Value = "Dropped", Text = "Dropped" },
+                new SelectListItem { Value = "Not Started", Text = "Not Started" }
+            };
+
+            ViewBag.TaskStatus = new SelectList(taskStatus, "Value", "Text", model.TaskStatus);
+
             return View(model);
         }
 
         // GET: Tasks/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -149,6 +163,19 @@ namespace ProjectManagementSystem.Web.Controllers
 
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+
+            var taskStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Assigned", Text = "Assigned" },
+                new SelectListItem { Value = "Started", Text = "Started" },
+                new SelectListItem { Value = "On Hold", Text = "On Hold" },
+                new SelectListItem { Value = "Completed", Text = "Completed" },
+                new SelectListItem { Value = "Dropped", Text = "Dropped" },
+                new SelectListItem { Value = "Not Started", Text = "Not Started" }
+            };
+
+            ViewBag.TaskStatus = new SelectList(taskStatus, "Value", "Text", model.TaskStatus);
+
             return View(model);
         }
 
@@ -177,15 +204,25 @@ namespace ProjectManagementSystem.Web.Controllers
             }
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+
+            var taskStatus = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Assigned", Text = "Assigned" },
+                new SelectListItem { Value = "Started", Text = "Started" },
+                new SelectListItem { Value = "On Hold", Text = "On Hold" },
+                new SelectListItem { Value = "Completed", Text = "Completed" },
+                new SelectListItem { Value = "Dropped", Text = "Dropped" },
+                new SelectListItem { Value = "Not Started", Text = "Not Started" }
+            };
+
+            ViewBag.TaskStatus = new SelectList(taskStatus, "Value", "Text", model.TaskStatus);
+
             return View(model);
         }
 
         // GET: Tasks/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
