@@ -132,6 +132,7 @@ TO DO:
 	Error handling when deleting
 	Drop down for project should show only PM-employees only
 	end date has a problem - format
+	When you delete a customer or employee it should delete user as well
 			
 	
 GIT Read Me
