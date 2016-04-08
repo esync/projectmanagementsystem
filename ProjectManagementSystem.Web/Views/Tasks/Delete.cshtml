@@ -1,4 +1,4 @@
-﻿@model ProjectManagementSystem.Web.Models.Task
+﻿@model ProjectManagementSystem.Web.ViewModels.TaskModel
 
 @{
     ViewBag.Title = "Delete";
@@ -14,19 +14,19 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Employee.EmployeeName)
+                @Html.DisplayNameFor(model => model.EmployeeName)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Employee.EmployeeName)
+                @Html.DisplayFor(model => model.EmployeeName)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.Project.ProjectName)
+                @Html.DisplayNameFor(model => model.ProjectName)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Project.ProjectName)
+                @Html.DisplayFor(model => model.ProjectName)
             </dd>
 
             <dt>

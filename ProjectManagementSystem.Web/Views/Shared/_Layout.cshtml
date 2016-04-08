@@ -76,7 +76,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
                             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                     </ul>
@@ -92,12 +92,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             @RenderBody()
         </div>
     </section>
-    <!-- Custom-JavaScript-File-Links -->
-    <!-- Supportive-JavaScript -->
-    <script type="text/javascript" src="/Scripts/jquery.min.js"></script>
-    <!-- Necessary-JavaScript-File-For-Bootstrap -->
-    @*<script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>*@
-
+   
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

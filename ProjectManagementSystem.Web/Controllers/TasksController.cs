@@ -8,9 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjectManagementSystem.Web.Models;
+using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
@@ -18,13 +20,35 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Tasks
         public async Task<ActionResult> Index()
         {
-            var tasks = db.Tasks.Include(t => t.Employee).Include(t => t.Project);
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var tasks = db.Tasks.Select
+            (
+                t => new TaskModel
+                {
+                    Id = t.Id,
+                    TaskName = t.TaskName,
+                    ProjectId = t.ProjectId,
+                    EmployeeId = t.EmployeeId,
+                    StartDate = t.StartDate,
+                    EndDate = t.EndDate,
+                    TaskStatus = t.TaskStatus,
+                    Comments = t.Comments,
+                    ProjectName = t.Project.ProjectName,
+                    EmployeeName = t.Employee.EmployeeName
+                }
+            );
+
             return View(await tasks.ToListAsync());
         }
 
         // GET: Tasks/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -34,12 +58,30 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(task);
+
+            TaskModel model = new TaskModel
+            {
+                Id = task.Id,
+                TaskName = task.TaskName,
+                ProjectId = task.ProjectId,
+                EmployeeId = task.EmployeeId,
+                StartDate = task.StartDate,
+                EndDate = task.EndDate,
+                TaskStatus = task.TaskStatus,
+                Comments = task.Comments,
+                ProjectName = task.Project.ProjectName,
+                EmployeeName = task.Employee.EmployeeName
+            };
+
+            return View(model);
         }
 
         // GET: Tasks/Create
         public ActionResult Create()
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName");
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName");
             return View();
@@ -50,23 +92,37 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,TaskName,ProjectId,EmployeeId,StartDate,EndDate,TaskStatus,Comments")] Models.Task task)
+        public async Task<ActionResult> Create(TaskModel model)
         {
             if (ModelState.IsValid)
             {
+                Models.Task task = new Models.Task
+                {
+                    TaskName = model.TaskName,
+                    ProjectId = model.ProjectId,
+                    EmployeeId = model.EmployeeId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    TaskStatus = model.TaskStatus,
+                    Comments = model.Comments
+                };
+
                 db.Tasks.Add(task);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", task.EmployeeId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", task.ProjectId);
-            return View(task);
+            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+            return View(model);
         }
 
         // GET: Tasks/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -76,9 +132,24 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", task.EmployeeId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", task.ProjectId);
-            return View(task);
+
+            TaskModel model = new TaskModel
+            {
+                Id = task.Id,
+                TaskName = task.TaskName,
+                ProjectId = task.ProjectId,
+                EmployeeId = task.EmployeeId,
+                StartDate = task.StartDate,
+                EndDate = task.EndDate,
+                TaskStatus = task.TaskStatus,
+                Comments = task.Comments,
+                ProjectName = task.Project.ProjectName,
+                EmployeeName = task.Employee.EmployeeName
+            };
+
+            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+            return View(model);
         }
 
         // POST: Tasks/Edit/5
@@ -86,22 +157,35 @@ namespace ProjectManagementSystem.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,TaskName,ProjectId,EmployeeId,StartDate,EndDate,TaskStatus,Comments")] Models.Task task)
+        public async Task<ActionResult> Edit(TaskModel model)
         {
             if (ModelState.IsValid)
             {
+                Models.Task task = await db.Tasks.FindAsync(model.Id);
+
+                task.TaskName = model.TaskName;
+                task.ProjectId = model.ProjectId;
+                task.EmployeeId = model.EmployeeId;
+                task.StartDate = model.StartDate;
+                task.EndDate = model.EndDate;
+                task.TaskStatus = model.TaskStatus;
+                task.Comments = model.Comments;
+
                 db.Entry(task).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", task.EmployeeId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", task.ProjectId);
-            return View(task);
+            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "EmployeeName", model.EmployeeId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "ProjectName", model.ProjectId);
+            return View(model);
         }
 
         // GET: Tasks/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -111,7 +195,22 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(task);
+
+            TaskModel model = new TaskModel
+            {
+                Id = task.Id,
+                TaskName = task.TaskName,
+                ProjectId = task.ProjectId,
+                EmployeeId = task.EmployeeId,
+                StartDate = task.StartDate,
+                EndDate = task.EndDate,
+                TaskStatus = task.TaskStatus,
+                Comments = task.Comments,
+                ProjectName = task.Project.ProjectName,
+                EmployeeName = task.Employee.EmployeeName
+            };
+
+            return View(model);
         }
 
         // POST: Tasks/Delete/5

@@ -14,6 +14,7 @@ using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
@@ -44,6 +45,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers
         public async Task<ActionResult> Index()
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             var customers = db.Customers.Select
             (
                 c => new CustomerModel
@@ -62,6 +66,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -86,6 +93,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
@@ -114,9 +124,6 @@ namespace ProjectManagementSystem.Web.Controllers
 
                     db.Customers.Add(customer);
                     await db.SaveChangesAsync();
-
-                    model.Id = customer.Id;
-                    model.UserId = user.Id;
                 }
 
                 return RedirectToAction("Index");
@@ -128,6 +135,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -174,6 +184,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Customers/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
