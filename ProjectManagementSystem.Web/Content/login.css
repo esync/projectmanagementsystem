@@ -10,3 +10,17 @@ body {
     padding-top: 10px !important; 
     padding-bottom: 48px !important;
 }
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    font-size: 15px !important;
+}
+
+
+.navbar-nav>li {
+    font-size: 14px !important;
+}
+
+.jumbotron p {
+    font-size: 15px !important;
+    font-weight: normal !important;
+}
