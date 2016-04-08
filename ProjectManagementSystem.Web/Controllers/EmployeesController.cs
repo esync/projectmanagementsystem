@@ -14,6 +14,7 @@ using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
@@ -44,6 +45,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees
         public async Task<ActionResult> Index()
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             var employees = db.Employees.Select
             (
                 e => new EmployeeModel
@@ -64,6 +68,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Details/5
         public async Task<ActionResult> Details(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -88,6 +95,20 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var departments  = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "PM", Text = "PM" },
+                new SelectListItem { Value = "BA", Text = "BA" },
+                new SelectListItem { Value = "SA", Text = "SA" },
+                new SelectListItem { Value = "UI developers", Text = "UI developers" },
+                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+            };
+
+            ViewBag.Department = new SelectList(departments, "Value", "Text");
+
             return View();
         }
 
@@ -115,13 +136,21 @@ namespace ProjectManagementSystem.Web.Controllers
 
                     db.Employees.Add(employee);
                     await db.SaveChangesAsync();
-
-                    model.Id = employee.Id;
-                    model.UserId = user.Id;
                 }
 
                 return RedirectToAction("Index");
             }
+
+            var departments = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "PM", Text = "PM" },
+                new SelectListItem { Value = "BA", Text = "BA" },
+                new SelectListItem { Value = "SA", Text = "SA" },
+                new SelectListItem { Value = "UI developers", Text = "UI developers" },
+                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+            };
+
+            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
 
             return View(model);
         }
@@ -129,6 +158,9 @@ namespace ProjectManagementSystem.Web.Controllers
         // GET: Employees/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -146,6 +178,17 @@ namespace ProjectManagementSystem.Web.Controllers
                 Department = employee.Department,
                 UserId = employee.UserId
             };
+
+            var departments = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "PM", Text = "PM" },
+                new SelectListItem { Value = "BA", Text = "BA" },
+                new SelectListItem { Value = "SA", Text = "SA" },
+                new SelectListItem { Value = "UI developers", Text = "UI developers" },
+                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+            };
+
+            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
 
             return View(model);
         }
@@ -168,12 +211,27 @@ namespace ProjectManagementSystem.Web.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
+            var departments = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "PM", Text = "PM" },
+                new SelectListItem { Value = "BA", Text = "BA" },
+                new SelectListItem { Value = "SA", Text = "SA" },
+                new SelectListItem { Value = "UI developers", Text = "UI developers" },
+                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+            };
+
+            ViewBag.Department = new SelectList(departments, "Value", "Text", model.Department);
+
             return View(model);
         }
 
         // GET: Employees/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

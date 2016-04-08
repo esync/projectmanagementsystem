@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjectManagementSystem.Web.Models.Task>
+﻿@model IEnumerable<ProjectManagementSystem.Web.ViewModels.TaskModel>
 
 @{
     ViewBag.Title = "Index";
@@ -14,10 +14,10 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Employee.EmployeeName)
+                @Html.DisplayNameFor(model => model.EmployeeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Project.ProjectName)
+                @Html.DisplayNameFor(model => model.ProjectName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TaskName)
@@ -41,10 +41,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employee.EmployeeName)
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                    @Html.DisplayFor(modelItem => item.ProjectName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TaskName)
