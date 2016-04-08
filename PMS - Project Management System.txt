@@ -87,9 +87,12 @@ OBJECTS
 		StartDate
 		EndDate
 		TaskStatus
-			1 - Assigned
-			2 - In Progress
-			3 - Completed
+			1 - Started - selected by Task Owner
+			2 - On Hold - selected by Task Owner
+			3 - Completed - selected by Task Owner
+			4 - Dropped - selected by PM
+			5 - Unassigned - task doesn't have a user
+			6 - Not Started - date has not reached
 		Comments
 		
 VIEWS
@@ -123,6 +126,45 @@ VIEWS
 		MyProjectTasks (RU)
 			TaskOwner
 			TaskDates (start and end dates)
+			
+			
+			TaskStatus
+			1 - Started - selected by Task Owner
+			2 - On Hold - selected by Task Owner
+			3 - Completed - selected by Task Owner
+			4 - Dropped - selected by PM
+			5 - Unassigned - task doesn't have a user
+			6 - Not Started - date has not reached
+		
+	Customer View
+		1. Project one and its details
+			Once you click on project tasks
+				Task Name
+				Employee Name
+				Start Date
+				End Date
+				Task Status
+					1 - Started - selected by Task Owner
+					2 - On Hold - selected by Task Owner
+					3 - Completed - selected by Task Owner
+					4 - Dropped - selected by PM
+					5 - Unassigned - task doesn't have a user
+					6 - Not Started - date has not reached
+				Comments
+		2. Project two and its details
+			Once you click on project tasks
+				Task Name
+				Employee Name
+				Start Date
+				End Date
+				Task Status
+					1 - Started - selected by Task Owner
+					2 - On Hold - selected by Task Owner
+					3 - Completed - selected by Task Owner
+					4 - Dropped - selected by PM
+					5 - Unassigned - task doesn't have a user
+					6 - Not Started - date has not reached
+				Comments
 
 TO DO:
 	Create customer view page
