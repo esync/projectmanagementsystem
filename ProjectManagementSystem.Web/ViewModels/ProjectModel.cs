@@ -33,7 +33,7 @@ namespace ProjectManagementSystem.Web.ViewModels
         [Display(Name = "Customer Name")]
         public string CustomerName { get; set; }
 
-        [Display(Name = "Employee Name")]
+        [Display(Name = "Project Manager")]
         public string EmployeeName { get; set; }
     }
 }

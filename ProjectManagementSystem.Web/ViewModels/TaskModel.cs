@@ -35,7 +35,7 @@ namespace ProjectManagementSystem.Web.ViewModels
         [Display(Name = "Project Name")]
         public string ProjectName { get; set; }
 
-        [Display(Name = "Employee Name")]
+        [Display(Name = "Task Owner")]
         public string EmployeeName { get; set; }
     }
 }

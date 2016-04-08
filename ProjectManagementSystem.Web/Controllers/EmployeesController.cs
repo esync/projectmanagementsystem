@@ -90,17 +90,21 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             var departments  = new List<SelectListItem>
             {
-                new SelectListItem { Value = "PM", Text = "PM" },
-                new SelectListItem { Value = "BA", Text = "BA" },
-                new SelectListItem { Value = "SA", Text = "SA" },
-                new SelectListItem { Value = "UI developers", Text = "UI developers" },
-                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+                new SelectListItem { Value = "Project Management", Text = "Project Management" },
+                new SelectListItem { Value = "Business Analysis", Text = "Business Analysis" },
+                new SelectListItem { Value = "System Analysis", Text = "System Analysis" },
+                new SelectListItem { Value = "UI Development", Text = "UI Development" },
+                new SelectListItem { Value = "DB Development", Text = "DB Development" }
             };
 
             var roles = new List<SelectListItem>
             {
-                new SelectListItem { Value = "Employees", Text = "Employees" },
-                new SelectListItem { Value = "Project Managers", Text = "Project Managers" }
+                new SelectListItem { Value = "Project Manager", Text = "Project Manager" },
+                new SelectListItem { Value = "Business Analyst", Text = "Business Analyst" },
+                new SelectListItem { Value = "System Analyst", Text = "System Analyst" },
+                new SelectListItem { Value = "UI Developer", Text = "UI Developer" },
+                new SelectListItem { Value = "DB Developer", Text = "DB Developer" }
+
             };
 
             ViewBag.Department = new SelectList(departments, "Value", "Text");
@@ -142,17 +146,20 @@ namespace ProjectManagementSystem.Web.Controllers
 
             var departments = new List<SelectListItem>
             {
-                new SelectListItem { Value = "PM", Text = "PM" },
-                new SelectListItem { Value = "BA", Text = "BA" },
-                new SelectListItem { Value = "SA", Text = "SA" },
-                new SelectListItem { Value = "UI developers", Text = "UI developers" },
-                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+                new SelectListItem { Value = "Project Management", Text = "Project Management" },
+                new SelectListItem { Value = "Business Analysis", Text = "Business Analysis" },
+                new SelectListItem { Value = "System Analysis", Text = "System Analysis" },
+                new SelectListItem { Value = "UI Development", Text = "UI Development" },
+                new SelectListItem { Value = "DB Development", Text = "DB Development" }
             };
 
             var roles = new List<SelectListItem>
             {
-                new SelectListItem { Value = "Employees", Text = "Employees" },
-                new SelectListItem { Value = "Project Managers", Text = "Project Managers" }
+                new SelectListItem { Value = "Project Manager", Text = "Project Manager" },
+                new SelectListItem { Value = "Business Analyst", Text = "Business Analyst" },
+                new SelectListItem { Value = "System Analyst", Text = "System Analyst" },
+                new SelectListItem { Value = "UI Developer", Text = "UI Developer" },
+                new SelectListItem { Value = "DB Developer", Text = "DB Developer" }
             };
 
             ViewBag.Department = new SelectList(departments, "Value", "Text");
@@ -184,11 +191,11 @@ namespace ProjectManagementSystem.Web.Controllers
 
             var departments = new List<SelectListItem>
             {
-                new SelectListItem { Value = "PM", Text = "PM" },
-                new SelectListItem { Value = "BA", Text = "BA" },
-                new SelectListItem { Value = "SA", Text = "SA" },
-                new SelectListItem { Value = "UI developers", Text = "UI developers" },
-                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+                new SelectListItem { Value = "Project Management", Text = "Project Management" },
+                new SelectListItem { Value = "Business Analysis", Text = "Business Analysis" },
+                new SelectListItem { Value = "System Analysis", Text = "System Analysis" },
+                new SelectListItem { Value = "UI Development", Text = "UI Development" },
+                new SelectListItem { Value = "DB Development", Text = "DB Development" }
             };
 
             ViewBag.Department = new SelectList(departments, "Value", "Text");
@@ -217,11 +224,11 @@ namespace ProjectManagementSystem.Web.Controllers
 
             var departments = new List<SelectListItem>
             {
-                new SelectListItem { Value = "PM", Text = "PM" },
-                new SelectListItem { Value = "BA", Text = "BA" },
-                new SelectListItem { Value = "SA", Text = "SA" },
-                new SelectListItem { Value = "UI developers", Text = "UI developers" },
-                new SelectListItem { Value = "DB developers", Text = "DB developers" }
+                new SelectListItem { Value = "Project Management", Text = "Project Management" },
+                new SelectListItem { Value = "Business Analysis", Text = "Business Analysis" },
+                new SelectListItem { Value = "System Analysis", Text = "System Analysis" },
+                new SelectListItem { Value = "UI Development", Text = "UI Development" },
+                new SelectListItem { Value = "DB Development", Text = "DB Development" }
             };
 
             ViewBag.Department = new SelectList(departments, "Value", "Text");

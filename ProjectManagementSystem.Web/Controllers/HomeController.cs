@@ -20,14 +20,24 @@ namespace ProjectManagementSystem.Web.Controllers
             if (!roleManager.RoleExists("Administrators"))
                 roleManager.Create(new IdentityRole("Administrators"));
 
-            if (!roleManager.RoleExists("Project Managers"))
-                roleManager.Create(new IdentityRole("Project Managers"));
+            if (!roleManager.RoleExists("Project Manager"))
+                roleManager.Create(new IdentityRole("Project Manager"));
 
-            if (!roleManager.RoleExists("Employees"))
-                roleManager.Create(new IdentityRole("Employees"));
+            if (!roleManager.RoleExists("Business Analyst"))
+                roleManager.Create(new IdentityRole("Business Analyst"));
+
+            if (!roleManager.RoleExists("System Analyst"))
+                roleManager.Create(new IdentityRole("System Analyst"));
+
+            if (!roleManager.RoleExists("UI Developer"))
+                roleManager.Create(new IdentityRole("UI Developer"));
+
+            if (!roleManager.RoleExists("DB Developer"))
+                roleManager.Create(new IdentityRole("DB Developer"));
 
             if (!roleManager.RoleExists("Customers"))
                 roleManager.Create(new IdentityRole("Customers"));
+
 
             return View();
         }
