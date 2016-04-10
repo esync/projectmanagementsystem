@@ -65,8 +65,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                             }
 
-                            <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                            <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
+                            if (User.IsInRole("Customers"))
+                            {
+                                <li>@Html.ActionLink("Customer Projects", "Index", "CustomerProjects")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                                <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
+                            }
 
                             <li>
                                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })

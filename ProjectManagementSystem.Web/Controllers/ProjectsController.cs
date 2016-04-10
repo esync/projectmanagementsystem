@@ -43,13 +43,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = await db.Projects.FindAsync(id);
+            var project = await db.Projects.FindAsync(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
 
-            ProjectModel model = new ProjectModel
+            var model = new ProjectModel
             {
                 Id = project.Id,
                 ProjectName = project.ProjectName,
@@ -99,7 +99,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Project project = new Project
+                var project = new Project
                 {
                     ProjectName = model.ProjectName,
                     CustomerId = model.CustomerId,
@@ -127,13 +127,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = await db.Projects.FindAsync(id);
+            var project = await db.Projects.FindAsync(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
 
-            ProjectModel model = new ProjectModel
+            var model = new ProjectModel
             {
                 Id = project.Id,
                 ProjectName = project.ProjectName,
@@ -161,7 +161,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Project project = await db.Projects.FindAsync(model.Id);
+                var project = await db.Projects.FindAsync(model.Id);
 
                 project.ProjectName = model.ProjectName;
                 project.CustomerId = model.CustomerId;
@@ -187,13 +187,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = await db.Projects.FindAsync(id);
+            var project = await db.Projects.FindAsync(id);
             if (project == null)
             {
                 return HttpNotFound();
             }
 
-            ProjectModel model = new ProjectModel
+            var model = new ProjectModel
             {
                 Id = project.Id,
                 ProjectName = project.ProjectName,
@@ -215,7 +215,7 @@ namespace ProjectManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Project project = await db.Projects.FindAsync(id);
+            var project = await db.Projects.FindAsync(id);
             db.Projects.Remove(project);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

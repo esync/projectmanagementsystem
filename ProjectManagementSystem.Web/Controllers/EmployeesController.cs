@@ -65,13 +65,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = await db.Employees.FindAsync(id);
+            var employee = await db.Employees.FindAsync(id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
 
-            EmployeeModel model = new EmployeeModel
+            var model = new EmployeeModel
             {
                 Id = employee.Id,
                 EmployeeName = employee.EmployeeName,
@@ -130,7 +130,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 {
                     await UserManager.AddToRoleAsync(user.Id, model.Role);
 
-                    Employee employee = new Employee
+                    var employee = new Employee
                     {
                         EmployeeName = model.EmployeeName,
                         Department = model.Department,
@@ -175,13 +175,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = await db.Employees.FindAsync(id);
+            var employee = await db.Employees.FindAsync(id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
 
-            EmployeeModel model = new EmployeeModel
+            var model = new EmployeeModel
             {
                 Id = employee.Id,
                 EmployeeName = employee.EmployeeName,
@@ -212,7 +212,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee employee = await db.Employees.FindAsync(model.Id);
+                var employee = await db.Employees.FindAsync(model.Id);
 
                 employee.EmployeeName = model.EmployeeName;
                 employee.Department = model.Department;
@@ -243,13 +243,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Employee employee = await db.Employees.FindAsync(id);
+            var employee = await db.Employees.FindAsync(id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
 
-            EmployeeModel model = new EmployeeModel
+            var model = new EmployeeModel
             {
                 Id = employee.Id,
                 EmployeeName = employee.EmployeeName,
@@ -265,7 +265,7 @@ namespace ProjectManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Employee employee = await db.Employees.FindAsync(id);
+            var employee = await db.Employees.FindAsync(id);
             db.Employees.Remove(employee);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

@@ -44,13 +44,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             if (task == null)
             {
                 return HttpNotFound();
             }
 
-            TaskModel model = new TaskModel
+            var model = new TaskModel
             {
                 Id = task.Id,
                 TaskName = task.TaskName,
@@ -97,7 +97,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Models.Task task = new Models.Task
+                var task = new Models.Task
                 {
                     TaskName = model.TaskName,
                     ProjectId = model.ProjectId,
@@ -138,13 +138,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             if (task == null)
             {
                 return HttpNotFound();
             }
 
-            TaskModel model = new TaskModel
+            var model = new TaskModel
             {
                 Id = task.Id,
                 TaskName = task.TaskName,
@@ -185,7 +185,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Models.Task task = await db.Tasks.FindAsync(model.Id);
+                var task = await db.Tasks.FindAsync(model.Id);
 
                 task.TaskName = model.TaskName;
                 task.ProjectId = model.ProjectId;
@@ -224,13 +224,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             if (task == null)
             {
                 return HttpNotFound();
             }
 
-            TaskModel model = new TaskModel
+            var model = new TaskModel
             {
                 Id = task.Id,
                 TaskName = task.TaskName,
@@ -252,7 +252,7 @@ namespace ProjectManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Models.Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             db.Tasks.Remove(task);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

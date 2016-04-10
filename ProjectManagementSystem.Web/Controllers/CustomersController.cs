@@ -64,13 +64,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await db.Customers.FindAsync(id);
+            var customer = await db.Customers.FindAsync(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
 
-            CustomerModel model = new CustomerModel
+            var model = new CustomerModel
             {
                 Id = customer.Id,
                 CustomerName = customer.CustomerName,
@@ -106,7 +106,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 {
                     await UserManager.AddToRoleAsync(user.Id, "Customers");
 
-                    Customer customer = new Customer
+                    var customer = new Customer
                     {
                         CustomerName = model.CustomerName,
                         ContactPerson = model.ContactPerson,
@@ -131,13 +131,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await db.Customers.FindAsync(id);
+            var customer = await db.Customers.FindAsync(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
 
-            CustomerModel model = new CustomerModel
+            var model = new CustomerModel
             {
                 Id = customer.Id,
                 CustomerName = customer.CustomerName,
@@ -157,7 +157,7 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Customer customer = await db.Customers.FindAsync(model.Id);
+                var customer = await db.Customers.FindAsync(model.Id);
 
                 customer.CustomerName = model.CustomerName;
                 customer.ContactPerson = model.ContactPerson;
@@ -177,13 +177,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = await db.Customers.FindAsync(id);
+            var customer = await db.Customers.FindAsync(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
 
-            CustomerModel model = new CustomerModel
+            var model = new CustomerModel
             {
                 Id = customer.Id,
                 CustomerName = customer.CustomerName,
@@ -199,7 +199,7 @@ namespace ProjectManagementSystem.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Customer customer = await db.Customers.FindAsync(id);
+            var customer = await db.Customers.FindAsync(id);
             db.Customers.Remove(customer);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
