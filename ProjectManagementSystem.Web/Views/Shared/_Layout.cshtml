@@ -59,8 +59,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                         @if (Request.IsAuthenticated)
                         {
-                            <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
-                            <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                            if (User.IsInRole("Administrators"))
+                            {
+                                <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
+                                <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                            }
+
                             <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
                             <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
 
@@ -76,7 +80,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
                             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                     </ul>

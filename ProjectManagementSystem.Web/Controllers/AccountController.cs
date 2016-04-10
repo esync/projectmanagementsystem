@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -155,6 +152,8 @@ namespace ProjectManagementSystem.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await UserManager.AddToRoleAsync(user.Id, "Administrators");
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

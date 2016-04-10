@@ -10,7 +10,7 @@ using ProjectManagementSystem.Web.ViewModels;
 
 namespace ProjectManagementSystem.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrators")]
     public class EmployeesController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
