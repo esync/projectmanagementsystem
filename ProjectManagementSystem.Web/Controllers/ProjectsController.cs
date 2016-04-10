@@ -60,7 +60,23 @@ namespace ProjectManagementSystem.Web.Controllers
                 Comments = project.Comments,
                 Attachment = project.Attachment,
                 CustomerName = project.Customer.CustomerName,
-                EmployeeName = project.Employee.EmployeeName
+                EmployeeName = project.Employee.EmployeeName,
+                Tasks = project.Tasks.Select
+                (
+                    t => new TaskModel
+                    {
+                        Id = t.Id,
+                        TaskName = t.TaskName,
+                        ProjectId = t.ProjectId,
+                        EmployeeId = t.EmployeeId,
+                        StartDate = t.StartDate,
+                        EndDate = t.EndDate,
+                        TaskStatus = t.TaskStatus,
+                        Comments = t.Comments,
+                        ProjectName = t.Project.ProjectName,
+                        EmployeeName = t.Employee.EmployeeName
+                    }
+                ).ToList()
             };
 
             return View(model);

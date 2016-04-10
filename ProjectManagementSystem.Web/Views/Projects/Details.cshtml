@@ -69,6 +69,62 @@
             </dd>
 
         </dl>
+        <hr/>
+        <h4>Tasks</h4>
+        <table class="table table-responsive">
+            <tr>
+                <th>
+                    Task Name
+                </th>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Project Name
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Task Status
+                </th>
+                <th>
+                    Comments
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in @Model.Tasks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comments)
+                    </td>
+                </tr>
+            }
+
+        </table>
     </div>
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

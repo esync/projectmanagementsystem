@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManagementSystem.Web.ViewModels
@@ -35,5 +36,7 @@ namespace ProjectManagementSystem.Web.ViewModels
 
         [Display(Name = "Project Manager")]
         public string EmployeeName { get; set; }
+
+        public IList<TaskModel> Tasks { get; set; }
     }
 }
