@@ -63,16 +63,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             {
                                 <li>@Html.ActionLink("Employees", "Index", "Employees")</li>
                                 <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-                            }
-
-                            if (User.IsInRole("Customers"))
-                            {
-                                <li>@Html.ActionLink("Customer Projects", "Index", "CustomerProjects")</li>
+                                <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                                <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
                             }
                             else
                             {
-                                <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
-                                <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
+                                if (User.IsInRole("Customers"))
+                                {
+                                    <li>@Html.ActionLink("Customer Projects", "Index", "CustomerProjects")</li>
+                                }
+                                else if (User.IsInRole("Project Manager"))
+                                {
+                                    <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                                    <li>@Html.ActionLink("Tasks", "Index", "Tasks")</li>
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Employee Tasks", "Index", "EmployeeTasks")</li>
+                                }
                             }
 
                             <li>
@@ -91,6 +99,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                     </ul>
+
                 </div><!-- //Navbar-Collapse -->
             </nav>
             <!-- //Navigation -->

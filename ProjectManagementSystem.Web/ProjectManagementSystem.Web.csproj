@@ -183,6 +183,7 @@
     <Compile Include="Controllers\CustomerProjectsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\EmployeeTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -302,6 +303,9 @@
     <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\CustomerProjects\Index.cshtml" />
     <Content Include="Views\CustomerProjects\Details.cshtml" />
+    <Content Include="Views\EmployeeTasks\Index.cshtml" />
+    <Content Include="Views\EmployeeTasks\Details.cshtml" />
+    <Content Include="Views\EmployeeTasks\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
