@@ -31,9 +31,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Comments)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Attachment)
-            </th>
             <th></th>
         </tr>
 
@@ -57,9 +54,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Comments)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Attachment)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |

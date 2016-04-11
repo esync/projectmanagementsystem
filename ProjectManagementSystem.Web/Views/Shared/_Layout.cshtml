@@ -12,14 +12,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- For-Mobile-Apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <!-- //For-Mobile-Apps -->
-    <!-- Custom-Theme-Files -->
-    <!-- Bootstrap-Core-CSS -->
-    <link href="/Content/bootstrap.min.css" rel="stylesheet">
-    <!-- Style.CSS -->
-    <link href="/Content/style.css" rel="stylesheet" type="text/css" media="all" />
-    <!-- Login.CSS -->
-    <link href="/Content/login.css" rel="stylesheet" type="text/css" media="all" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 
     <!-- //Custom-Theme-Files -->
     <script>
@@ -112,9 +108,5 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             @RenderBody()
         </div>
     </section>
-   
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
