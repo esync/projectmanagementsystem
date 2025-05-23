@@ -1,11 +1,15 @@
 ﻿using System.Data.Entity;
-using System.Linq;
+using System.Linq; // Ensure System.Linq is imported
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity; 
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin; 
+using System.Web; 
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
+using System.Collections.Generic; // Required for List<T>
 
 namespace ProjectManagementSystem.Web.Controllers
 {
@@ -64,7 +68,10 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var customer = await db.Customers.FindAsync(id);
+            // Include Projects and their Tasks when fetching Customer details
+            var customer = await db.Customers
+                                   .Include(c => c.Projects.Select(p => p.Tasks))
+                                   .SingleOrDefaultAsync(c => c.Id == id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -77,8 +84,20 @@ namespace ProjectManagementSystem.Web.Controllers
                 ContactPerson = customer.ContactPerson,
                 ContactPhone = customer.ContactPhone,
                 UserId = customer.UserId,
-                UserName = customer.User.UserName,
-                Email = customer.User.Email
+                UserName = customer.User?.UserName, // Use null conditional for safety
+                Email = customer.User?.Email,      // Use null conditional for safety
+                Projects = customer.Projects.Select(p => new ProjectModel // Populate projects
+                {
+                    Id = p.Id,
+                    ProjectName = p.ProjectName,
+                    // other project properties as needed for display
+                    Tasks = p.Tasks.Select(t => new TaskModel
+                    {
+                        Id = t.Id,
+                        TaskName = t.TaskName
+                        // other task properties
+                    }).ToList()
+                }).ToList()
             };
             return View(model);
         }
@@ -116,9 +135,15 @@ namespace ProjectManagementSystem.Web.Controllers
 
                     db.Customers.Add(customer);
                     await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
             }
 
             return View(model);
@@ -158,7 +183,11 @@ namespace ProjectManagementSystem.Web.Controllers
             if (ModelState.IsValid)
             {
                 var customer = await db.Customers.FindAsync(model.Id);
-
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
+                
                 customer.CustomerName = model.CustomerName;
                 customer.ContactPerson = model.ContactPerson;
                 customer.ContactPhone = model.ContactPhone;
@@ -200,8 +229,56 @@ namespace ProjectManagementSystem.Web.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             var customer = await db.Customers.FindAsync(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+
+            string userIdToDelete = customer.UserId;
+
+            // Delete associated ApplicationUser first (if exists)
+            if (!string.IsNullOrEmpty(userIdToDelete))
+            {
+                var user = await UserManager.FindByIdAsync(userIdToDelete);
+                if (user != null)
+                {
+                    var userResult = await UserManager.DeleteAsync(user);
+                    if (!userResult.Succeeded)
+                    {
+                        // Log error, add to ModelState, or handle the failure
+                        foreach (var error in userResult.Errors)
+                        {
+                            ModelState.AddModelError("", "Error deleting associated user account: " + error);
+                        }
+                        // Optionally, prevent customer deletion if user deletion fails critically
+                        // For this example, we'll allow customer deletion to proceed but show an error.
+                        TempData["ErrorMessage"] = "Failed to delete associated user account. Customer record was still deleted.";
+                        // return View(customer); // Or redirect with error
+                    }
+                }
+            }
+
+            // Retrieve and remove associated projects and their tasks
+            var projectsToDelete = db.Projects.Where(p => p.CustomerId == id).ToList();
+            if (projectsToDelete.Any())
+            {
+                foreach (var project in projectsToDelete)
+                {
+                    var tasksForThisProject = db.Tasks.Where(t => t.ProjectId == project.Id).ToList();
+                    if (tasksForThisProject.Any())
+                    {
+                        db.Tasks.RemoveRange(tasksForThisProject);
+                    }
+                }
+                db.Projects.RemoveRange(projectsToDelete);
+            }
+            
+            // Remove the customer
             db.Customers.Remove(customer);
-            await db.SaveChangesAsync();
+            
+            // Save all changes to the database
+            await db.SaveChangesAsync(); 
+            
             return RedirectToAction("Index");
         }
 
@@ -209,7 +286,21 @@ namespace ProjectManagementSystem.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+                 if (userDb != null)
+                {
+                    userDb.Dispose();
+                    userDb = null;
+                }
+                if (db != null)
+                {
+                    db.Dispose();
+                    db = null;
+                }
             }
             base.Dispose(disposing);
         }

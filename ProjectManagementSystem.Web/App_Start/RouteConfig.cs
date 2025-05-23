@@ -9,6 +9,8 @@ namespace ProjectManagementSystem.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes(); // Enable attribute routing for MVC controllers
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

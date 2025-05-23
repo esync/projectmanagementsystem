@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using System.Linq;
+using System.Linq; // Ensure System.Linq is imported
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
@@ -43,7 +43,8 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var project = await db.Projects.FindAsync(id);
+            // Include Tasks when fetching Project details
+            var project = await db.Projects.Include(p => p.Tasks).SingleOrDefaultAsync(p => p.Id == id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -73,8 +74,8 @@ namespace ProjectManagementSystem.Web.Controllers
                         EndDate = t.EndDate,
                         TaskStatus = t.TaskStatus,
                         Comments = t.Comments,
-                        ProjectName = t.Project.ProjectName,
-                        EmployeeName = t.Employee.EmployeeName
+                        ProjectName = t.Project.ProjectName, // Project is already loaded
+                        EmployeeName = t.Employee.EmployeeName // Assuming Employee is loaded or will lazy-load
                     }
                 ).ToList()
             };
@@ -162,13 +163,17 @@ namespace ProjectManagementSystem.Web.Controllers
             if (ModelState.IsValid)
             {
                 var project = await db.Projects.FindAsync(model.Id);
+                if (project == null)
+                {
+                    return HttpNotFound();
+                }
 
                 project.ProjectName = model.ProjectName;
                 project.CustomerId = model.CustomerId;
                 project.EmployeeId = model.EmployeeId;
                 project.StartDate = model.StartDate;
                 project.EndDate = model.EndDate;
-                project.Comments = project.Comments;
+                project.Comments = model.Comments;
                 project.Attachment = model.Attachment;
 
                 db.Entry(project).State = EntityState.Modified;
@@ -216,8 +221,20 @@ namespace ProjectManagementSystem.Web.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             var project = await db.Projects.FindAsync(id);
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Retrieve and remove associated tasks
+            var tasksToDelete = db.Tasks.Where(t => t.ProjectId == project.Id).ToList();
+            if (tasksToDelete.Any())
+            {
+                db.Tasks.RemoveRange(tasksToDelete);
+            }
+            
             db.Projects.Remove(project);
-            await db.SaveChangesAsync();
+            await db.SaveChangesAsync(); // Save changes for both tasks and project
             return RedirectToAction("Index");
         }
 
