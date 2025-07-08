@@ -3,10 +3,10 @@ using System.Linq; // Ensure System.Linq is imported
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity; 
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin; 
-using System.Web; 
+using Microsoft.AspNet.Identity.Owin;
+using System.Web;
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
 using System.Collections.Generic; // Required for List<T>
@@ -109,7 +109,7 @@ namespace ProjectManagementSystem.Web.Controllers
         }
 
         // POST: Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -174,7 +174,7 @@ namespace ProjectManagementSystem.Web.Controllers
         }
 
         // POST: Customers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -187,7 +187,7 @@ namespace ProjectManagementSystem.Web.Controllers
                 {
                     return HttpNotFound();
                 }
-                
+
                 customer.CustomerName = model.CustomerName;
                 customer.ContactPerson = model.ContactPerson;
                 customer.ContactPhone = model.ContactPhone;
@@ -272,13 +272,13 @@ namespace ProjectManagementSystem.Web.Controllers
                 }
                 db.Projects.RemoveRange(projectsToDelete);
             }
-            
+
             // Remove the customer
             db.Customers.Remove(customer);
-            
+
             // Save all changes to the database
-            await db.SaveChangesAsync(); 
-            
+            await db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 

@@ -41,9 +41,9 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -68,7 +68,7 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 // Consider returning HttpStatusCode.BadRequest and a more structured error response
-                return Json(new { success = false, errors = errors }); 
+                return Json(new { success = false, errors = errors });
             }
 
             // Ensure this is false for API login; SPA will handle "remember me" via token persistence
@@ -86,9 +86,9 @@ namespace ProjectManagementSystem.Web.Controllers
                     {
                         // Log this critical error: JWT configuration is missing
                         // Consider a more generic error message for the client for security
-                        return Json(new { success = false, message = "Authentication configuration error." }); 
+                        return Json(new { success = false, message = "Authentication configuration error." });
                     }
-                    
+
                     // For System.IdentityModel.Tokens.Jwt v4.x, SymmetricSecurityKey and HmacSha256Signature are in System.IdentityModel.Tokens
                     // For v5+ (Microsoft.IdentityModel.Tokens), they are in Microsoft.IdentityModel.Tokens
                     // Given the package version 4.0.4, we'll use the types expected by that version.
@@ -96,17 +96,17 @@ namespace ProjectManagementSystem.Web.Controllers
                     // for System.IdentityModel.Tokens.Jwt v4, it's typically SymmetricKey or a direct byte array.
                     // Let's try with Microsoft.IdentityModel.Tokens.SymmetricSecurityKey as it's more common with JwtSecurityTokenHandler.
                     // If it's v4, it might need System.IdentityModel.Tokens.SecurityKey and specific algorithm strings.
-                    
+
                     var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                     var signingCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
-                        securityKey, 
+                        securityKey,
                         Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature
                     );
 
                     var claims = new[] {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Id), // 'sub' is standard for subject (user ID)
                         new Claim(JwtRegisteredClaimNames.NameId, user.UserName), // Can also use ClaimTypes.NameIdentifier
-                        new Claim(JwtRegisteredClaimNames.Email, user.Email),                        
+                        new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
                         // Add other claims as needed, e.g., roles
@@ -121,7 +121,7 @@ namespace ProjectManagementSystem.Web.Controllers
                         notBefore: DateTime.UtcNow,
                         expires: DateTime.UtcNow.AddHours(1), // Token valid for 1 hour
                         signingCredentials: signingCredentials);
-                    
+
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
                     return Json(new { success = true, token = tokenString, userId = user.Id, userName = user.UserName });

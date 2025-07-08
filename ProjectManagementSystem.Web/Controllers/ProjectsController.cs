@@ -92,7 +92,7 @@ namespace ProjectManagementSystem.Web.Controllers
         }
 
         // POST: Projects/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -123,7 +123,7 @@ namespace ProjectManagementSystem.Web.Controllers
 
         // GET: Projects/Edit/5
         public async Task<ActionResult> Edit(int? id)
-        {            
+        {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -154,7 +154,7 @@ namespace ProjectManagementSystem.Web.Controllers
         }
 
         // POST: Projects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -232,7 +232,7 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 db.Tasks.RemoveRange(tasksToDelete);
             }
-            
+
             db.Projects.Remove(project);
             await db.SaveChangesAsync(); // Save changes for both tasks and project
             return RedirectToAction("Index");

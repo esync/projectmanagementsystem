@@ -4,10 +4,10 @@ using System.Linq; // Ensure System.Linq is imported
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity; 
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin; 
-using System.Web; 
+using Microsoft.AspNet.Identity.Owin;
+using System.Web;
 using ProjectManagementSystem.Web.Models;
 using ProjectManagementSystem.Web.ViewModels;
 
@@ -17,7 +17,7 @@ namespace ProjectManagementSystem.Web.Controllers
     public class EmployeesController : Controller
     {
         private PmSyncDbContext db = new PmSyncDbContext();
-        private ApplicationDbContext userDb = new ApplicationDbContext(); 
+        private ApplicationDbContext userDb = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
 
         public EmployeesController()
@@ -316,13 +316,13 @@ namespace ProjectManagementSystem.Web.Controllers
             {
                 db.Tasks.RemoveRange(tasksAssigned);
             }
-            
+
             // Remove the employee
             db.Employees.Remove(employee);
-            
+
             // Save all changes
             await db.SaveChangesAsync();
-            
+
             return RedirectToAction("Index");
         }
 

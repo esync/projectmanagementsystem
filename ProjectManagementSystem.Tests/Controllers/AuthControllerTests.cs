@@ -38,7 +38,7 @@ namespace ProjectManagementSystem.Tests.Controllers
             var owinContext = new Mock<IOwinContext>();
             owinContext.Setup(oc => oc.Get<ApplicationUserManager>(It.IsAny<string>())).Returns(_mockUserManager.Object);
             owinContext.Setup(oc => oc.Get<ApplicationSignInManager>(It.IsAny<string>())).Returns(_mockSignInManager.Object);
-            
+
             _mockHttpContext.Setup(hc => hc.Request).Returns(_mockHttpRequest.Object);
             _mockHttpContext.Setup(hc => hc.GetOwinContext()).Returns(owinContext.Object);
 
@@ -50,7 +50,7 @@ namespace ProjectManagementSystem.Tests.Controllers
                 { "JwtIssuer", "TestIssuer" },
                 { "JwtAudience", "TestAudience" }
             };
-            
+
             _authController = new AuthController(_mockUserManager.Object, _mockSignInManager.Object);
             _authController.ControllerContext = new ControllerContext(_mockHttpContext.Object, new System.Web.Routing.RouteData(), _authController);
         }
@@ -68,7 +68,7 @@ namespace ProjectManagementSystem.Tests.Controllers
             _mockUserManager
                 .Setup(m => m.FindByNameAsync(loginViewModel.Email))
                 .ReturnsAsync(applicationUser);
-            
+
             // Simulate that ConfigurationManager has the required settings for this specific test
             // This still doesn't change the static ConfigurationManager, but makes the intent clear for this test.
             // A better way is to inject IConfiguration or equivalent into the controller.
@@ -100,7 +100,7 @@ namespace ProjectManagementSystem.Tests.Controllers
             var userIdProperty = dataObject.GetType().GetProperty("userId");
             Assert.IsNotNull(userIdProperty, "'userId' property not found.");
             Assert.AreEqual(applicationUser.Id, (string)userIdProperty.GetValue(dataObject), "UserId should match.");
-            
+
             var userNameProperty = dataObject.GetType().GetProperty("userName");
             Assert.IsNotNull(userNameProperty, "'userName' property not found.");
             Assert.AreEqual(applicationUser.UserName, (string)userNameProperty.GetValue(dataObject), "UserName should match.");
@@ -115,7 +115,7 @@ namespace ProjectManagementSystem.Tests.Controllers
             _mockSignInManager
                 .Setup(m => m.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, false, false))
                 .ReturnsAsync(SignInStatus.Failure);
-            
+
             // Act
             var result = await _authController.LoginSpa(loginViewModel) as JsonResult;
 
@@ -123,7 +123,7 @@ namespace ProjectManagementSystem.Tests.Controllers
             Assert.IsNotNull(result, "Result should be a JsonResult.");
             Assert.IsNotNull(result.Data, "JsonResult.Data should not be null.");
 
-            dynamic data = result.Data; 
+            dynamic data = result.Data;
 
             var successProperty = data.GetType().GetProperty("success");
             Assert.IsNotNull(successProperty, "'success' property not found.");
@@ -139,7 +139,7 @@ namespace ProjectManagementSystem.Tests.Controllers
         public async Task LoginSpa_WithInvalidModelState_ReturnsError()
         {
             // Arrange
-            var loginViewModel = new LoginViewModel { Email = "", Password = "TestPassword" }; 
+            var loginViewModel = new LoginViewModel { Email = "", Password = "TestPassword" };
             _authController.ModelState.AddModelError("Email", "The Email field is required.");
 
             // Act
@@ -157,9 +157,9 @@ namespace ProjectManagementSystem.Tests.Controllers
 
             var errorsProperty = data.GetType().GetProperty("errors");
             Assert.IsNotNull(errorsProperty, "'errors' property not found.");
-            
-            var errorsList = errorsProperty.GetValue(data) as IEnumerable<string>; 
-            if (errorsList == null) { 
+
+            var errorsList = errorsProperty.GetValue(data) as IEnumerable<string>;
+            if (errorsList == null) {
                 var errorsEnumerable = errorsProperty.GetValue(data) as System.Collections.IEnumerable;
                 if (errorsEnumerable != null) errorsList = errorsEnumerable.Cast<string>();
             }
@@ -206,7 +206,7 @@ namespace ProjectManagementSystem.Tests.Controllers
 
             bool success = (bool)successProperty.GetValue(data);
             string message = messageProperty.GetValue(data) as string;
-            
+
             Assert.IsFalse(success, "Login should not be successful if JWT config is missing.");
             Assert.AreEqual("Authentication configuration error.", message, "Error message should indicate JWT configuration error.");
 

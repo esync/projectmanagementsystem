@@ -1,11 +1,11 @@
-﻿using System; 
+﻿using System;
 using System.Web; // Added for HttpContext, Server
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Serilog; 
-using Serilog.Events; 
+using Serilog;
+using Serilog.Events;
 
 namespace ProjectManagementSystem.Web
 {
@@ -21,16 +21,16 @@ namespace ProjectManagementSystem.Web
 
             // Configure Serilog
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug() 
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) 
-                .MinimumLevel.Override("System", LogEventLevel.Warning) 
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     Server.MapPath("~/App_Data/Logs/pms_log-.txt"), // Log file path, changed name slightly for uniqueness
-                    rollingInterval: RollingInterval.Day,        
-                    retainedFileCountLimit: 7,                   
-                    shared: true,                                
-                    flushToDiskInterval: TimeSpan.FromSeconds(1)) 
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7,
+                    shared: true,
+                    flushToDiskInterval: TimeSpan.FromSeconds(1))
                 .CreateLogger();
 
             Log.Information("Application Starting Up...");

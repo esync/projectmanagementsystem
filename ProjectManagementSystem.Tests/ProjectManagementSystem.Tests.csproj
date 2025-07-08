@@ -43,8 +43,8 @@
     <Reference Include="System.Web"/>
     <Reference Include="System.Configuration"/>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion> 
-      <HintPath>..\ProjectManagementSystem.Web\bin\System.Web.Mvc.dll</HintPath> 
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ProjectManagementSystem.Web\bin\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -74,13 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProjectManagementSystem.Web\ProjectManagementSystem.Web.csproj">
-      <Project>{F8C70859-93B7-45CC-B17C-C09F8B51FD94}</Project> 
+      <Project>{F8C70859-93B7-45CC-B17C-C09F8B51FD94}</Project>
       <Name>ProjectManagementSystem.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\AuthControllerTests.cs" />
+    <Compile Include="Controllers\CustomersControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
