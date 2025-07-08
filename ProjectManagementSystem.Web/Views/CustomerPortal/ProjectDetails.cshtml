@@ -1,0 +1,109 @@
+@model ProjectManagementSystem.Web.ViewModels.CustomerProjectViewModel
+
+@{
+    ViewBag.Title = "Project Details - " + Model.ProjectName;
+}
+
+<h2>Project: @Model.ProjectName</h2>
+<hr />
+
+<div>
+    <h4>Project Information</h4>
+    <dl class="dl-horizontal">
+        <dt>Project Manager:</dt>
+        <dd>@Html.DisplayFor(model => model.ProjectManagerName)</dd>
+
+        <dt>Start Date:</dt>
+        <dd>@Model.StartDate.ToShortDateString()</dd>
+
+        <dt>End Date:</dt>
+        <dd>@Model.EndDate.ToShortDateString()</dd>
+    </dl>
+</div>
+<hr />
+
+<div>
+    <h4>Tasks</h4>
+    @if (!Model.Tasks.Any())
+    {
+        <p>No tasks found for this project.</p>
+    }
+    else
+    {
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Assigned To</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Task Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => task.TaskName)</td>
+                        <td>@Html.DisplayFor(modelItem => task.AssignedEmployeeName)</td>
+                        <td>@task.StartDate.ToShortDateString()</td>
+                        <td>@task.EndDate.ToShortDateString()</td>
+                        <td>@Html.DisplayFor(modelItem => task.TaskStatus)</td>
+                        <td>@Html.DisplayFor(modelItem => task.Comments)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<hr />
+
+<div>
+    <h4>Project Comments</h4>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div id="commentsList" style="margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid #eee; padding: 10px;">
+        @if (!Model.CommentsList.Any())
+        {
+            <p>No comments yet for this project.</p>
+        }
+        else
+        {
+            foreach (var comment in Model.CommentsList)
+            {
+                <div class="comment-entry" style="margin-bottom:10px; padding-bottom:5px; border-bottom: 1px dotted #ccc;">
+                    <p><strong>@Html.DisplayFor(modelItem => comment.AuthorName)</strong> <small class="text-muted">(@comment.CommentDate.ToString("g"))</small></p>
+                    <p style="white-space: pre-wrap;">@Html.DisplayFor(modelItem => comment.CommentText)</p>
+                </div>
+            }
+        }
+    </div>
+
+    <h5>Add Your Comment</h5>
+    @using (Html.BeginForm("AddComment", "CustomerPortal", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.NewComment.ProjectId, new { Value = Model.Id }) // Ensure ProjectId is set for the new comment
+
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.NewComment.CommentText, new { @class = "form-control", rows = 4, placeholder = "Enter your comment here..." })
+            @Html.ValidationMessageFor(model => model.NewComment.CommentText, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Add Comment" class="btn btn-primary" />
+        </div>
+    }
+</div>
+<hr />
+<p>
+    @Html.ActionLink("Back to My Projects", "Index", null, new { @class = "btn btn-default" })
+</p>

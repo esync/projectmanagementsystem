@@ -1,0 +1,56 @@
+@model IEnumerable<ProjectManagementSystem.Web.ViewModels.CustomerProjectViewModel>
+
+@{
+    ViewBag.Title = "My Projects";
+}
+
+<h2>My Projects for @ViewBag.CustomerName</h2>
+
+@if (!Model.Any())
+{
+    <p>You do not have any projects assigned to you at the moment.</p>
+}
+else
+{
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ProjectName)
+                </th>
+                <th>
+                    Project Manager
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().EndDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectManagerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("View Details", "ProjectDetails", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
